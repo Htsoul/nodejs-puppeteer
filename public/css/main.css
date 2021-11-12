@@ -1,0 +1,74 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.box{
+    width: 100%;
+    height: 100%;
+}
+.box .fx a{
+    margin-right: 26px;
+    text-decoration: none;
+    color:#4e73df;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    background-color: #dadada;
+}
+.box thead tr>td{
+    font-size: 14px;
+    color: #a1a1aa;
+    text-align: center;
+    line-height: 60px;
+}
+table{
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+.box tr{
+    border-bottom: 2px solid #e4e4e7;
+}
+.box tbody tr>td{
+    font-size: 12px;
+    color: #52525b;
+    text-align: center;
+    line-height: 60px;
+}
+.box .one{
+    width: 45%;
+    height: 60px
+
+}
+.box .two{
+    width: 35%;
+    height: 60px;
+}
+.box .thr{
+    width: 10%;
+    height: 60px;
+}
+.box .fou{
+    width: 10%;
+    height: 60px;
+}
+
+.footer{
+    margin: 20px;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+}
+.footer a{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    text-decoration: none;
+    background-color: #a1a1aa;
+    text-align: center;
+    margin: 8px;
+    line-height: 60px;
+    cursor: pointer;
+}
