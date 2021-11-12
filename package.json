@@ -1,0 +1,18 @@
+{
+  "name": "pac",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "It soul",
+  "license": "MIT",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.1",
+    "express-art-template": "^1.0.1"
+  }
+}
