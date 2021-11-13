@@ -1,6 +1,7 @@
 
 const puppeteer = require('puppeteer');
 const fs = require('fs')
+const router = require('./router/router')
 const express = require('express')
 
 let app = express()
@@ -9,8 +10,8 @@ app.set('views', `${__dirname}/views`)
 app.engine('html', require('express-art-template'))
 
 app.use(express.static('public'))
-
-const url = 'https://www.zhipin.com/c101020100-p100114/';
+app.use(router)
+const url = 'https://www.zhipin.com/';
 
 
 //方法一
@@ -21,29 +22,33 @@ const url = 'https://www.zhipin.com/c101020100-p100114/';
     executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page = await browser.newPage();
+  let job = ['nodejs', 'java', 'python', 'c++', 'php','golang']
+  let city = ['c101020100', 'c101010100', 'c101280600', 'c101210100', 'c101280100']
   let data = []
-  for(let i = 1; i<=6; i++){
-    await page.goto(url + '?page='+i);
-    await page.waitForSelector('#main > div > div.job-list > ul>li')
-    let job = await page.$$eval(
-      ".job-primary .info-primary .primary-box .job-title .job-name a",
-      (el) => el.map((h) => h.innerText)
-    );
-    let area = await page.$$eval(
-      ".job-primary .info-primary .primary-box .job-title .job-area-wrapper .job-area",
-      (el) => el.map((h) => h.innerText)
-    );
-    let salary = await page.$$eval(
-      ".job-primary .info-primary .primary-box .job-limit .red",
-      (el) => el.map((h) => h.innerText)
-    );
-
+  for(let c = 0; c < city.length; c++){
+    for(let j =0; j < job.length; j++){
+      for(let i = 1; i <= 2; i++){
+        await page.goto(url +`${city[c]}/?query=${job[j]}&page=${i}`);
+        await page.waitForSelector('#main > div > div.job-list > ul>li')
+        let salary = await page.$$eval(
+          ".job-primary .info-primary .primary-box .job-limit .red",
+          (el) => el.map((h) => h.innerText)
+        );
+    
+        data.push({
+          salary:salary
+        })
+      }
+      data.push({
+        job:job[j]
+      })
+    }
     data.push({
-      job : job,
-      area : area,
-      salary : salary
+      city:city[c]
     })
   }
+    
+  
   console.log(data); 
 
    await browser.close();
@@ -57,7 +62,7 @@ const url = 'https://www.zhipin.com/c101020100-p100114/';
 
 
 //方法二
-/* (async () => {
+(async () => {
   const browser = await puppeteer.launch({
     headless: false,
     slowMo:500,
@@ -96,57 +101,10 @@ const url = 'https://www.zhipin.com/c101020100-p100114/';
     }
   }) 
 })();
- */
-
-
-
-const getData = ()=>{
-  return new  Promise((resolve,reject)=>{
-    fs.readFile('data.json',(err,data)=>{
-      if(err){
-        console.log('读取失败');
-        reject(err)
-      }else{
-        resolve(data)
-      }
-    })
-  })
-  
-} 
-
-app.get('/',(req,res)=>{
-  let tag = parseInt(req.query.tag)
-  console.log(tag);
-  getData().then(result =>{ 
-    let info = JSON.parse(result)
-    if(tag===1){
-      res.render('index.html',{
-        data:info[1]
-      })
-    }else if(tag===2){
-      res.render('index.html',{
-        data:info[2]
-      })
-    }else if(tag===3){
-      res.render('index.html',{
-        data:info[3]
-      })
-    }else{
-      res.render('index.html',{
-        data:info[0]
-      })
-    }
-  })
-})
 
 app.listen(3000,()=>{
   console.log('Running..............');
 })
 
- /*  console.log(cheerio.load(html));
-  $('ul > li').each((index,item)=>{
-    console.log(index,item);
-    job : $('.job-primary .info-primary .primary-box .job-title .job-name a').text()
-    area : $('.job-primary .info-primary .primary-box .job-title .job-area-wrapper .job-area').text()
-    salary : $('.job-primary .info-primary .primary-box .job-limit .red').text() 
-  }) */
+
+module.exports = app;
